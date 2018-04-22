@@ -59,14 +59,17 @@ int writeDoubleMatrix(char *name, double *data, int m, int n, FILE *matFile)
 	DimensionsArray dimArray;
 	dimArray.m = m;
 	dimArray.n = n;
+	char *checkedName;
 	char *arrayName;
 
-	checkArrayname(name);
+	checkedName = malloc(strlen(name));
+	strcpy(checkedName, name);
+	checkArrayname(checkedName);
 
-	unsigned int arrayNameLen = 8 + ((unsigned int)strlen(name) / 8)*8;
+	unsigned int arrayNameLen = 8 + ((unsigned int)strlen(checkedName) / 8)*8;
 	arrayName = malloc(arrayNameLen);
 	memset(arrayName, 0, arrayNameLen);
-	strcpy(arrayName, name);
+	strcpy(arrayName, checkedName);
 
 	numArray.flags.dataType = miUINT32;
 	numArray.flags.dataSize = 8;
@@ -95,12 +98,13 @@ int writeDoubleMatrix(char *name, double *data, int m, int n, FILE *matFile)
 	fwrite(((NumericArray*)(matlabArray.data))->dimensions.data, 1, sizeof(DimensionsArray), matFile);
 	fwrite(&((NumericArray*)(matlabArray.data))->name.dataType, 1, 4, matFile);
 	fwrite(&((NumericArray*)(matlabArray.data))->name.dataSize, 1, 4, matFile);
-	fwrite(((NumericArray*)(matlabArray.data))->name.data, 1, arrayNameLen, matFile);
+	fwrite(((NumericArray*)(matlabArray.data))->name.data, 1, ((NumericArray*)(matlabArray.data))->name.dataSize, matFile);
 	fwrite(&((NumericArray*)(matlabArray.data))->pr.dataType, 1, 4, matFile);
 	fwrite(&((NumericArray*)(matlabArray.data))->pr.dataSize, 1, 4, matFile);
 	fwrite(((NumericArray*)(matlabArray.data))->pr.data, 1, ((NumericArray*)(matlabArray.data))->pr.dataSize, matFile);
 
 	free(arrayName);
+	free(checkedName);
 	return 0;
 }
 
