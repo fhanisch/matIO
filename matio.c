@@ -62,12 +62,12 @@ int writeDoubleMatrix(char *name, double *data, int m, int n, FILE *matFile)
 	char *checkedName;
 	char *arrayName;
 
-	checkedName = malloc(strlen(name));
+	checkedName = malloc(strlen(name)+1);
 	strcpy(checkedName, name);
 	checkArrayname(checkedName);
 
 	unsigned int arrayNameLen = 8 + ((unsigned int)strlen(checkedName) / 8)*8;
-	arrayName = malloc(arrayNameLen);
+	arrayName = malloc(arrayNameLen+1);
 	memset(arrayName, 0, arrayNameLen);
 	strcpy(arrayName, checkedName);
 
