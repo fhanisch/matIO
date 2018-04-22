@@ -39,6 +39,16 @@ typedef struct
 
 const unsigned int tagLength = 8;
 
+void checkArrayname(char *name)
+{
+	while (*name != 0)
+	{
+		if (*name == '(') *name = '_';
+		else if (*name == ')') *name = 0;
+		name++;
+	}
+}
+
 int writeDoubleMatrix(char *name, double *data, int m, int n, FILE *matFile)
 {
 	DataElement matlabArray;
@@ -50,6 +60,8 @@ int writeDoubleMatrix(char *name, double *data, int m, int n, FILE *matFile)
 	dimArray.m = m;
 	dimArray.n = n;
 	char *arrayName;
+
+	checkArrayname(name);
 
 	unsigned int arrayNameLen = 8 + ((unsigned int)strlen(name) / 8)*8;
 	arrayName = malloc(arrayNameLen);
