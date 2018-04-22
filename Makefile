@@ -1,3 +1,5 @@
+all: EXEC LIB
+
 EXEC:
 	cl /nologo /W3 matio.c
 

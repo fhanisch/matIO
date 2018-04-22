@@ -38,9 +38,8 @@ typedef struct
 } DimensionsArray;
 
 const unsigned int tagLength = 8;
-FILE *matFile;
 
-int writeDoubleMatrix(char *name, double *data, int m, int n)
+int writeDoubleMatrix(char *name, double *data, int m, int n, FILE *matFile)
 {
 	DataElement matlabArray;
 	NumericArray numArray;
@@ -92,7 +91,7 @@ int writeDoubleMatrix(char *name, double *data, int m, int n)
 	return 0;
 }
 
-int writeHeader(char *msg)
+int writeHeader(char *msg, FILE *matFile)
 {
 	char header[128];
 	time_t curtime;
@@ -116,12 +115,12 @@ int main(int argc, char *argv[])
 
 	printf("Create mat-File\n\n");
 
-	matFile = fopen(filename, "wb");
-	writeHeader("Created by WebFMU");
-	writeDoubleMatrix("vehicleSpeed", values, 1, 9);
-	writeDoubleMatrix("yData", values, 9, 1);
-	writeDoubleMatrix("zData", values, 3, 3);
-	fclose(matFile);
+	FILE *myMatFile = fopen(filename, "wb");
+	writeHeader("Created by WebFMU", myMatFile);
+	writeDoubleMatrix("vehicleSpeed", values, 1, 9, myMatFile);
+	writeDoubleMatrix("yData", values, 9, 1, myMatFile);
+	writeDoubleMatrix("zData", values, 3, 3, myMatFile);
+	fclose(myMatFile);
 
 	return 0;
 }
