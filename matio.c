@@ -88,6 +88,7 @@ int writeDoubleMatrix(char *name, double *data, int m, int n, FILE *matFile)
 	fwrite(&((NumericArray*)(matlabArray.data))->pr.dataSize, 1, 4, matFile);
 	fwrite(((NumericArray*)(matlabArray.data))->pr.data, 1, ((NumericArray*)(matlabArray.data))->pr.dataSize, matFile);
 
+	free(arrayName);
 	return 0;
 }
 
